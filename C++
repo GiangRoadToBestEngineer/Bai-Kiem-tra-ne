@@ -1,0 +1,233 @@
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+// =========================================================================
+// CỤM CHỨC NĂNG 1: GIẢI PHƯƠNG TRÌNH TRÙNG PHƯƠNG AX^4 + BX^2 + C = 0
+// =========================================================================
+void giaiPhuongTrinhTrungPhuong() {
+    cout << "\n--- Giai phuong trinh trung phuong AX^4 + BX^2 + C = 0 ---\n";
+    double a, b, c;
+    cout << "Nhap he so A, B, C: ";
+    cin >> a >> b >> c;
+
+    if (a == 0) {
+        if (b == 0) {
+            if (c == 0) cout << "Phuong trinh co vo so nghiem.\n";
+            else cout << "Phuong trinh vo nghiem.\n";
+        } else {
+            double t = -c / b;
+            if (t < 0) cout << "Phuong trinh vo nghiem.\n";
+            else if (t == 0) cout << "Phuong trinh co 1 nghiem x = 0\n";
+            else cout << "Phuong trinh co 2 nghiem: x1 = " << sqrt(t) << ", x2 = " << -sqrt(t) << "\n";
+        }
+        return;
+    }
+
+    double delta = b * b - 4 * a * c;
+    if (delta < 0) {
+        cout << "Phuong trinh vo nghiem.\n";
+    } else if (delta == 0) {
+        double t = -b / (2 * a);
+        if (t < 0) cout << "Phuong trinh vo nghiem.\n";
+        else if (t == 0) cout << "Phuong trinh co 1 nghiem x = 0\n";
+        else cout << "Phuong trinh co 2 nghiem: x1 = " << sqrt(t) << ", x2 = " << -sqrt(t) << "\n";
+    } else {
+        double t1 = (-b + sqrt(delta)) / (2 * a);
+        double t2 = (-b - sqrt(delta)) / (2 * a);
+        bool coNghiem = false;
+        
+        cout << "Nghiem cua phuong trinh la: ";
+        if (t1 > 0) {
+            cout << "x = " << sqrt(t1) << ", x = " << -sqrt(t1) << " ";
+            coNghiem = true;
+        } else if (t1 == 0) {
+            cout << "x = 0 ";
+            coNghiem = true;
+        }
+        
+        if (t2 > 0) {
+            cout << "x = " << sqrt(t2) << ", x = " << -sqrt(t2) << " ";
+            coNghiem = true;
+        } else if (t2 == 0) {
+            cout << "x = 0 ";
+            coNghiem = true;
+        }
+        
+        if (!coNghiem) cout << "Vo nghiem";
+        cout << "\n";
+    }
+}
+
+// =========================================================================
+// CỤM CHỨC NĂNG 2: TÍNH DIỆN TÍCH VÀ CHU VI HÌNH THOI
+// =========================================================================
+void tinhHinhThoi() {
+    cout << "\n--- Tinh dien tich va chu vi hinh thoi ---\n";
+    double d1, d2;
+    // Yêu cầu: Kiểm tra giá trị nhập vào
+    do {
+        cout << "Nhap do dai 2 duong cheo d1, d2 (d1, d2 > 0): ";
+        cin >> d1 >> d2;
+        if (d1 <= 0 || d2 <= 0) {
+            cout << "Loi! Do dai duong cheo phai lon hon 0. Vui long nhap lai.\n";
+        }
+    } while (d1 <= 0 || d2 <= 0);
+
+    // Chu vi hình thoi = 4 * cạnh. Cạnh = căn bậc hai của ((d1/2)^2 + (d2/2)^2)
+    double canh = sqrt(pow(d1 / 2, 2) + pow(d2 / 2, 2));
+    double chuVi = 4 * canh;
+    // Diện tích hình thoi = 1/2 * d1 * d2
+    double dienTich = 0.5 * d1 * d2;
+
+    cout << "Chu vi hinh thoi: " << chuVi << "\n";
+    cout << "Dien tich hinh thoi: " << dienTich << "\n";
+}
+
+// Hàm hỗ trợ: Nhập ma trận
+void nhapMaTran(vector<vector<int>>& M, int n, int m, string ten) {
+    cout << "Nhap ma tran " << ten << ":\n";
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            cout << ten << "[" << i << "][" << j << "] = ";
+            cin >> M[i][j];
+        }
+    }
+}
+
+// Hàm hỗ trợ: Xuất ma trận
+void xuatMaTran(const vector<vector<int>>& M, int n, int m, string ten) {
+    cout << "Ma tran " << ten << ":\n";
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            cout << M[i][j] << "\t";
+        }
+        cout << "\n";
+    }
+}
+
+// =========================================================================
+// CỤM CHỨC NĂNG 3: KHỞI TẠO VÀ CỘNG MA TRẬN
+// =========================================================================
+void xuLyMaTran(int& n, int& m, vector<vector<int>>& D) {
+    cout << "\n--- Khoi tao ma tran A, B, C va tinh D = A + B + C ---\n";
+    // Yêu cầu: Kiểm tra giá trị n, m nhập vào
+    do {
+        cout << "Nhap so dong n va so cot m (n, m > 0): ";
+        cin >> n >> m;
+        if (n <= 0 || m <= 0) {
+            cout << "Loi! So dong va so cot phai lon hon 0. Vui long nhap lai.\n";
+        }
+    } while (n <= 0 || m <= 0);
+
+    vector<vector<int>> A(n, vector<int>(m));
+    vector<vector<int>> B(n, vector<int>(m));
+    vector<vector<int>> C(n, vector<int>(m));
+    D.assign(n, vector<int>(m)); // Khởi tạo ma trận D với kích thước nxm
+
+    nhapMaTran(A, n, m, "A");
+    nhapMaTran(B, n, m, "B");
+    nhapMaTran(C, n, m, "C");
+
+    // Tính ma trận tổng D = A + B + C
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            D[i][j] = A[i][j] + B[i][j] + C[i][j];
+        }
+    }
+
+    // Xuất các ma trận
+    xuatMaTran(A, n, m, "A");
+    xuatMaTran(B, n, m, "B");
+    xuatMaTran(C, n, m, "C");
+    xuatMaTran(D, n, m, "D (Tong)");
+}
+
+// =========================================================================
+// CỤM CHỨC NĂNG 4: XUẤT ĐƯỜNG CHÉO MA TRẬN D
+// =========================================================================
+void xuatDuongCheo(int n, int m, const vector<vector<int>>& D) {
+    cout << "\n--- Xuat duong cheo ma tran D va sap xep giam dan ---\n";
+    if (n == 0 || m == 0 || D.empty()) {
+        cout << "Ma tran D chua duoc khoi tao! Vui long chay chuc nang 3 truoc.\n";
+        return;
+    }
+
+    // Đường chéo chính tồn tại tới min(n, m) đối với ma trận hình chữ nhật
+    int limit = min(n, m);
+    vector<int> duongCheo;
+    
+    cout << "Cac phan tu tren duong cheo cua D la: ";
+    for (int i = 0; i < limit; ++i) {
+        duongCheo.push_back(D[i][i]);
+        cout << D[i][i] << " ";
+    }
+    cout << "\n";
+
+    // Sắp xếp giảm dần
+    sort(duongCheo.begin(), duongCheo.end(), greater<int>());
+
+    cout << "Duong cheo sau khi sap xep giam dan: ";
+    for (int val : duongCheo) {
+        cout << val << " ";
+    }
+    cout << "\n";
+}
+
+
+// =========================================================================
+// CHƯƠNG TRÌNH CHÍNH & TẠO MENU
+// =========================================================================
+int main() {
+    int luaChon;
+    char tiepTuc;
+    
+    // Khai báo chung cho D để có thể truyền từ Cụm 3 sang Cụm 4
+    int n = 0, m = 0;
+    vector<vector<int>> D;
+
+    do {
+        // Hiển thị Menu
+        cout << "\n================= MENU =================\n";
+        cout << "1. Giai phuong trinh trung phuong AX^4 + BX^2 + C = 0\n";
+        cout << "2. Tinh dien tich va chu vi hinh thoi\n";
+        cout << "3. Khoi tao ma tran A, B, C va tinh tong D = A+B+C\n";
+        cout << "4. Xuat duong cheo ma tran D va sap xep giam dan\n";
+        cout << "5. Thoat\n";
+        cout << "========================================\n";
+        cout << "Nhap lua chon (1-5): ";
+        cin >> luaChon;
+
+        switch (luaChon) {
+            case 1:
+                giaiPhuongTrinhTrungPhuong();
+                break;
+            case 2:
+                tinhHinhThoi();
+                break;
+            case 3:
+                xuLyMaTran(n, m, D);
+                break;
+            case 4:
+                xuatDuongCheo(n, m, D);
+                break;
+            case 5:
+                cout << "Chuong trinh ket thuc.\n";
+                return 0; // Thoát ngay lập tức
+            default:
+                cout << "Lua chon khong hop le. Vui long chon lai tu 1 den 5.\n";
+                break;
+        }
+
+        // Yêu cầu: Hiện câu hỏi làm nữa không
+        cout << "\nBan co muon lam nua khong (Y/N)? Nhan Y/y de tiep tuc: ";
+        cin >> tiepTuc;
+
+    } while (tiepTuc == 'Y' || tiepTuc == 'y');
+
+    cout << "Chuong trinh ket thuc. Tam biet!\n";
+    return 0;
+}
