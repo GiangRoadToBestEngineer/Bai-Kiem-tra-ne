@@ -1,0 +1,23 @@
+# Giải hệ phương trình tuyến tính:
+from scipy import linalg
+import numpy as np
+# Định nghĩa hệ phương trình tuyến tính:
+A=np.array([[2 , 1],[3,2]])
+B=np.array([5,7])
+#Giải hệ phương trình tuyến tính:
+X=linalg.solve(A,B)
+print(X)
+# Tính tích phân một hàm số:
+from scipy import integrate
+# Định nghĩa hàm:
+def my_function(x):
+    return x**2
+#Tính tích phân từ 0 đến 1:
+intergral = integrate.quad(my_function,0,1)
+print(intergral)
+#Tính giá trị riêng và Vecto riêng của một ma trận:
+A1=np.array([[2,1],[3,2]])
+#Tính giá trị riêng và vecto riêng của ma trận: 
+evals , evecs =linalg.eig(A1)
+print('Trị riêng:',evals)
+print('Vecto riêng:',evecs)
