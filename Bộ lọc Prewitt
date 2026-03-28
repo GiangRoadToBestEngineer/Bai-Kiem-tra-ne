@@ -1,0 +1,33 @@
+from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt 
+from scipy import ndimage
+# Đọc ảnh:
+my_path = 'C:\\Users\\DELL\\Desktop\\numpy_project\\img_avg_2.jpg'
+img = Image.open(my_path)
+#Ảnh xám:
+gray_image = img.convert('L')
+
+# Chuyển ảnh xám về mảng:
+img_array = np.array(gray_image)
+
+# Tính gradient theo hướng x:
+gradient_x = ndimage.convolve(img_array,np.array([[-1,0,1],[-1,0,1],[-1,0,1]]))
+# Tính gradient theo hướng y:
+gradient_y = ndimage.convolve(img_array,np.array([[-1,-1,-1],[0,0,0],[1,1,1]]))
+# Tính biên độ gradient:
+gradient_magnitude = np.sqrt(gradient_x**2 + gradient_y**2)
+
+
+# Hiển thị ảnh:
+fig , axs = plt.subplots(2,1,figsize=(10,8))
+
+plt.subplot(2,1,1)
+plt.imshow(gray_image,cmap='gray')
+plt.title('Ảnh xám')
+
+plt.subplot(2,1,2)
+plt.imshow(gradient_x,cmap='gray')
+plt.title('Ảnh đạo hàm')
+
+plt.show()
