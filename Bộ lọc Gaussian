@@ -1,0 +1,36 @@
+from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt 
+from scipy import ndimage
+# Đọc ảnh:
+my_path = 'C:\\Users\\DELL\\Desktop\\numpy_project\\bed138c1e4f0128d658ef246ab493ec8.JPG'
+img = Image.open(my_path)
+#Ảnh xám:
+gray_image = img.convert('L')
+
+# Chuyển ảnh xám về mảng:
+img_array = np.array(gray_image)
+# Làm mờ ảnh xám với bộ lọc Gaussian:
+sigma_1 = 0.5
+blurred_img_a = ndimage.gaussian_filter(img_array, sigma=sigma_1,mode='constant')
+blurred_img_b = ndimage.gaussian_filter(img_array,sigma=5,mode='constant')
+blurred_img_c = ndimage.gaussian_filter(img_array,sigma=6,mode='constant')
+
+#Hiển thị ảnh:
+plt.subplot(2,2,1)
+plt.imshow(gray_image , cmap='gray')
+plt.title('Ảnh xám gốc')
+
+plt.subplot(2,2,2)
+plt.imshow(blurred_img_a,cmap='gray')
+plt.title('Ảnh xám 0.5')
+
+plt.subplot(2,2,3)
+plt.imshow(blurred_img_b,cmap='gray')
+plt.title('Ảnh xám 1')
+
+plt.subplot(2,2,4)
+plt.imshow(blurred_img_c,cmap='gray')
+plt.title('Ảnh xám 3')
+
+plt.show()
