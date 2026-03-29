@@ -1,0 +1,30 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import ndimage
+from PIL import Image
+
+#Đọc ảnh:
+img = Image.open('C:/Users/DELL/Desktop/numpy_project/animal.jpg')   
+# Chuyển sang ảnh xám:
+gray_img = img.convert('L')
+# Chuyển ảnh xám sang ma trận:
+img_array = np.array(gray_img)
+# Chuyển sang ảnh nhị phân:
+binary_image = 1*(img_array<225)
+# Đánh nhãn:
+labeled_img , num_features = ndimage.label(binary_image)
+#Tạo lưới subplot với 3 dòng 1 cột:
+fig , axs = plt.subplots(3,1,figsize=(10,20))
+
+plt.subplot(3,1,1)
+plt.imshow(gray_img,cmap='gray')
+plt.title('Ảnh xám')
+
+plt.subplot(3,1,2)
+plt.imshow(binary_image,cmap='gray')
+plt.title('Ảnh nhị phân')
+
+plt.subplot(3,1,3)
+plt.imshow(labeled_img,cmap='gray')
+plt.title(f'Đã gán nhãn đối tượng ({num_features})')  # f:Format
+plt.show()
