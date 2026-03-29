@@ -1,0 +1,35 @@
+import cv2
+import time
+# Đọc video từ file :
+my_video = cv2.VideoCapture('C:/Users/DELL/Desktop/numpy_project/.venv/video_ne.mp4')
+# Tạo cửa sổ hiển thị:
+cv2.namedWindow('Video Player',cv2.WINDOW_NORMAL)
+# Ghi text lên màn hình : 
+font=cv2.FONT_HERSHEY_SIMPLEX
+font_color = (255,255,255)
+font_thickness = 2
+# Hiển thị từng khung hình:
+while True:
+    # Thời gian trước khi đọc:
+    start_time = time.time()
+    # Đọc 1 frame:
+    ret , frame = my_video.read()
+
+    # Thoát ra khi ko đọc được:
+    if not ret:
+        break
+    # Thời gian sau khi đọc:
+    end_time = time.time()
+    # Tínhn FPS:
+    fps = 1/(end_time-start_time)
+
+    # Ghi số lượng fps:
+    cv2.putText(frame,f'FPS:{fps:.2f}',(100,100),font,5,font_color,font_thickness)
+    # Hiển thị:
+    cv2.imshow('Video Player',frame)
+
+    if(cv2.waitKey(10)==ord('q')):
+        break
+# Giải phóng:
+my_video.release
+cv2.destroyAllWindows()
